@@ -31,12 +31,14 @@ RUN ./autogen.sh
 
 RUN ./configure sim --enable-simulator --with-realtime=uspace --disable-gtk --enable-non-distributable=yes
 # 'make' not needed get's done by build ing the package anyway
+RUN make
+RUN make install-menus
 
 # For Building Debian Packages
-RUN apt-get install dpkg-dev -y
-RUN apt-get install debhelper iptables libreadline-gplv2-dev asciidoc dblatex docbook-xsl dvipng ghostscript graphviz groff -y
-RUN apt-get install inkscape python-lxml source-highlight texlive-lang-cyrillic texlive-lang-french texlive-lang-german texlive-lang-polish -y
-RUN apt-get install texlive-lang-spanish w3c-linkchecker libgtk2.0-dev netcat desktop-file-utils -y
+#RUN apt-get install dpkg-dev -y
+#RUN apt-get install debhelper iptables libreadline-gplv2-dev asciidoc dblatex docbook-xsl dvipng ghostscript graphviz groff -y
+#RUN apt-get install inkscape python-lxml source-highlight texlive-lang-cyrillic texlive-lang-french texlive-lang-german texlive-lang-polish -y
+#RUN apt-get install texlive-lang-spanish w3c-linkchecker libgtk2.0-dev netcat desktop-file-utils -y
 
 # needed at runtime
 RUN apt-get install python-serial mesa-utils python-gtksourceview2 python-vte python-xlib -y
@@ -46,14 +48,20 @@ RUN apt-get install gir1.2-gst-plugins-base-1.0 gir1.2-gstreamer-1.0 gstreamer1.
 
 # configure debian package build
 WORKDIR /linuxcnc-dev/debian
-RUN ./configure uspace
+RUN ./configure sim
 
 # build debian package
-WORKDIR /linuxcnc-dev
-RUN dpkg-buildpackage -b -uc
+#WORKDIR /linuxcnc-dev
+#RUN dpkg-buildpackage -b -uc
 
 # install linuxcnc
-WORKDIR /
-RUN dpkg -i linuxcnc-uspace_2.8.0~pre1_amd64.deb
+#WORKDIR /
+#RUN dpkg -i linuxcnc-uspace_2.8.0~pre1_amd64.deb
+
+# create user linuxcnc, run linuxcnc as root does not work.
+RUN useradd -ms /bin/bash linuxcnc
+USER linuxcnc
+WORKDIR /home/linuxcnc
+RUN echo '. /linuxcnc-dev/scripts/rip-environment' >> .bashrc
 
 CMD bash
