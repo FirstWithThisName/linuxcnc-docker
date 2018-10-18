@@ -3,6 +3,11 @@
 ###### A docker image to run linuxcnc.
 
 ### Build it
+
+##### Requirements for the build:
+* run docker as current user
+* installed git
+
 ```
 ./build.sh # you need to be in the directory of the repository
 ```
