@@ -1,4 +1,4 @@
-# linuxcnc-dev
+# linuxcnc-docker
 
 ###### A docker image to run linuxcnc.
 
