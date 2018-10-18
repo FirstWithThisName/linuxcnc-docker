@@ -12,6 +12,11 @@
 ./build.sh # you need to be in the directory of the repository
 ```
 
+### Get the binary image
+```
+docker pull aceofdiamonds/linuxcnc-docker
+```
+
 ### Run it
 if not already done you first need to do `xhost +` to allow docker to use your x-server.
 
